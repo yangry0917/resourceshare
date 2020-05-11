@@ -23,7 +23,7 @@ public class TestController {
     //@ResponseBody
     public List hello(){
         List<Map<String,String>> list = testService.hello();
-        return list;
+        return  list;
     }
 
     //跨域
