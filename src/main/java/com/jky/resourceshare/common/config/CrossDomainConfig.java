@@ -1,4 +1,4 @@
-package com.jky.resourceshare.config;
+package com.jky.resourceshare.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

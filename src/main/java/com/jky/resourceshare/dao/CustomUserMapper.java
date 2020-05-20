@@ -5,8 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 @Mapper
-public interface LoginMapper {
+public interface CustomUserMapper {
 
-    @Select("select user_name from tbl_user_info where user_name = #{userName}")
-    User findUserByUsername(String userName);
+    //@Select("select user_name from tbl_user_info where user_name = #{userName}")
+    User findUserByUsername(String loginName);
 }

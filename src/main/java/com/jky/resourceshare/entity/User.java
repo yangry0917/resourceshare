@@ -3,12 +3,13 @@ package com.jky.resourceshare.entity;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 使用springSecurity用户类必须实现UserDetails
@@ -17,50 +18,63 @@ import java.util.Collection;
 @Entity
 @Table(name = "tbl_user_info")
 public class User implements UserDetails {
-    @Column(name="id", length=50)
+
+    public User(String username, String password, List<Role> roles) {
+        this.userName = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    @Column(name = "id", length = 50)
     private String id;
 
-    @Column(name="user_name", length=20)
+    @Column(name = "user_name", length = 20)
     private String userName;
 
-    @Column(name="sex", length=1)
+    @Column(name = "sex", length = 1)
     private String sex;
 
-    @Column(name="phone", length=20)
+    @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(name="card_id", length=25)
+    @Column(name = "card_id", length = 25)
     private String cardId;
 
-    @Column(name="login_name", length=20)
+    @Column(name = "login_name", length = 20)
     private String loginName;
 
-    @Column(name="pwd", length=20)
+    @Column(name = "pwd", length = 20)
     private String password;
 
-    @Column(name="enable", length=1)
+    @Column(name = "enable", length = 1)
     private Boolean enable;
 
-    @Column(name="unit_id", length=1)
+    @Column(name = "unit_id", length = 1)
     private String unitId;
 
+    @ManyToMany(targetEntity = Role.class, cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinTable(name = "tbl_user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
+
+    private Collection<? extends GrantedAuthority> authorities;
     /**
      * 返回用户角色
+     *
      * @return
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.userName;
     }
 
     @Override
@@ -82,4 +96,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return enable;
     }
+
 }
